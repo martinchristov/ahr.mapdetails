@@ -1,7 +1,127 @@
-
-#usamap{
+.gradient(@c1,@c2){
+	background-image: -webkit-gradient(
+		linear,
+		left top,
+		left bottom,
+		color-stop(0, @c1),
+		color-stop(1, @c2)
+	);
+	background-image: -o-linear-gradient(bottom, @c1 0%, @c2 100%);
+	background-image: -moz-linear-gradient(bottom, @c1 0%, @c2 100%);
+	background-image: -webkit-linear-gradient(bottom, @c1 0%, @c2 100%);
+	background-image: -ms-linear-gradient(bottom, @c1 0%, @c2 100%);
+	background-image: linear-gradient(to bottom, @c1 0%, @c2 100%);
+}
+.transition(@what){
+  -moz-transition:@what;
+  -o-transition:@what;
+  -webkit-transition:@what;
+  transition:@what;
+}
+#usamap{ 
 	width: 630px;
-	height: 400px;
+	height: 360px;
 	-webkit-transform:scale(1.2);
 	-webkit-transform-origin:0% 0%;
+	overflow: hidden;
+	margin-bottom: 80px;
+}
+
+#measurestats{
+	font-family: Roboto;
+	.years{
+		font-size: 17px;
+		font-weight: bold;
+		color:#787878;
+
+	}
+	h1{
+		font-size: 42px;
+		font-weight: 300;
+		color:#3d3a3a;
+		margin:0;
+	}
+	p{
+		margin-top: 0;
+		line-height: 21px;
+		font-size: 12px;
+		color:#7b7979;
+	}
+	.metric-type{
+		list-style:none;
+		margin-left: 0;
+		padding-left: 0;
+		li{
+			float: left;
+			margin:0 3px;
+			a{
+				background: #db7f08;
+				.gradient(#e68a13,#d47801);
+				color: white;
+				font-weight: bold;
+				font-size: 14px;
+				padding: 7px 21px;
+				border-radius: 4px;
+				border:1px solid #ce7400;
+				.transition(all .15s);
+				&:hover{
+					border-color:#aa6000;
+				}
+				&.current{
+					background: #5b5b5b;
+					box-shadow: inset 0 2px #484848;
+					border-color: #4c4c4c;
+				}
+				&:active{
+					background: #5b5b5b;
+					box-shadow: inset 0 2px #484848;
+					border-color: #4c4c4c;
+
+				}
+			}
+		}
+	}
+
+	.right{float:right;}
+	.left{float:left;}
+	.clear{clear:both;width: 100%;}
+	.col{
+		width: 310px;
+		margin-top: 10px;
+		h3{
+			font-size: 20px; font-weight: 300;
+			font-style: italic;
+			color: #4a4a4a;
+		}
+		.label{
+			font-weight: bold;color: #4a4a4a; font-size: 15px;
+		}
+		.bar{
+			width:100%;
+			border-radius: 4px;
+			background-color: #cbc6c6;
+			height: 28px;
+			color: white;
+			font-weight: bold;
+			overflow: hidden;
+			position: relative;
+			margin-bottom: 15px;
+			.fill{
+				background: #3b85f5;
+				height: 100%;
+				border-right: 1px solid white;
+				-webkit-transform:skew(-20deg,0) translate(-4px);
+			}
+			.met{
+				position: absolute;
+				z-index: 4;
+				top: 4.5px;
+				text-align: right;
+				width: 50px;
+				&.l{
+					text-align: left;
+				}
+			}
+		}
+	}
 }
