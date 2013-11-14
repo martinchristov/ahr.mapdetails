@@ -51,12 +51,13 @@ var svgMap = {
                 });
 
                 state.click(function () {
-                    if (mapData[i].link != null && mapData[i].link != "") {
-                        if (typeof mapData[i].link != "function") {
-                            window.location.href = mapData[i].link;
-                        }
-                        else mapData[i].link(mapData[i]);
-                    }
+                    animateBar(Math.random())
+                    // if (mapData[i].link != null && mapData[i].link != "") {
+                    //     if (typeof mapData[i].link != "function") {
+                    //         window.location.href = mapData[i].link;
+                    //     }
+                    //     else mapData[i].link(mapData[i]);
+                    // }
                 })
                 if (isie) {
                     state.mousedown(function () {
