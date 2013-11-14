@@ -26288,7 +26288,19 @@ var svgMap = {
                 });
 
                 state.click(function () {
-                    animateBar(Math.random())
+                    // $("#chosen-state-input").val(mapData[i].shortname).trigger('keyup')
+                    angular.element($(".metric-type")).scope().changeState(mapData[i].shortname)
+                    
+
+                    // $.get(uri.api+"?compareName="+compareName+"&stateCode="+mapData[i].shortname,handleDisparities)
+                    animateBar(mapData[i].perc/100);
+                    stateTitle.animate({opacity:0},130,function(){
+                        stateTitle.html(mapData[i].name).animate({opacity:1},130)
+                    })
+                    if(!stateChosen){
+                        stateChosen=true;
+                        stateTitle.next().css({display:"block",opacity:0}).animate({opacity:1},300)
+                    }
                     // if (mapData[i].link != null && mapData[i].link != "") {
                     //     if (typeof mapData[i].link != "function") {
                     //         window.location.href = mapData[i].link;
@@ -26338,13 +26350,14 @@ var svgMap = {
         }
     }
 }
-var bar;
+var bar, stateTitle, stateChosen=false;
 $Doc.ready(function () {
-	$.get(uri.mapapi,function(d){
+	$.get(uri.mapapi+"?compareName="+compareName,function(d){
 		for(var i=0; i< d.length; i++){
 			for(var s in mapData){
 				if(mapData[s].shortname==d[i].StateCode){
 					mapData[s].color_map = d[i].Color;
+					mapData[s].perc = d[i].Value;
 					break;
 				}
 			}
@@ -26353,8 +26366,8 @@ $Doc.ready(function () {
 	})
     
 	bar = $("#ppl-mask-path").get(0);
-	subar = $(".subar")
-	
+	subar = $(".subar .met")
+	stateTitle=$('#state-title')
     // $.get("http://development.americashealthrankings.org/JsonService/GetDisparitiesVisualizationMap?compareName=smoking")
     // $.get("img/peoples.txt",function(d){
     // 	var c = Raphael($(".affected .bar").get(0),650,60);
@@ -26366,28 +26379,78 @@ $Doc.ready(function () {
     
 })
 
-var anint=0,curx=-881,totalsteps = 50;
+var anint=0,curx=-805,totalsteps = 15,prevperc=0,curperc=0;
 var $subar;
 function animateBar(perc){
-	//-881:0%     
-	//-249: 100%
-	//632 diff
+	//-805:0%     
+	//-199: 100%
+	//606 diff
 	clearInterval(anint);
-	var endx = -881+ perc*632;
-	anint = setInterval(inter,10);
+	var endx = -805+ perc*606;
+	anint = setInterval(inter,20);
+
 	var stepx = (endx-curx)/totalsteps;
 	var steps = 0;
+
+	var percstep = (perc*100-curperc)/totalsteps;
+	// prevperc = perc;
 	function inter(){
 		curx+=stepx;
 		bar.setAttribute("transform","matrix(1,0,0,1,"+curx+",-10)")
 		steps++;
-		if(steps==totalsteps)clearInterval(anint)
-	}
-	subar.find('.fill').css({width:(perc*100)+"%"})
+		if(steps==totalsteps)clearInterval(anint);
 		
+		curperc +=percstep;
+		subar.html(Math.round(curperc)+"%")
+	}
+	// subar.find('.fill').css({width:(perc*100)+"%"})
+	subar.css({left:perc*606-40})
 }
 
+
 var uri = {
-	mapapi:"http://development.americashealthrankings.org/JsonService/GetDisparitiesVisualizationMap?compareName=smoking", //?compareName=smoking
-	api:"staticapi/GetDisparitiesVisualization.json" //?compareName=smoking&stateCode=MN
+	mapapi:"http://development.americashealthrankings.org/JsonService/GetDisparitiesVisualizationMap", //?compareName=smoking
+	api:"http://development.americashealthrankings.org/JsonService/GetDisparitiesVisualization" //?compareName=smoking&stateCode=MN
+}
+
+function MainCtrl($scope,$http){
+	
+	$scope.changeState= function(state){
+		$scope.$apply(function(){
+			$http.get(uri.api+"?compareName="+compareName+"&stateCode="+state).success(function(d){
+				trunkData();
+				for(var i=0;i<d.disparities.length;i++){
+					$scope.data[d.disparities[i].DisparityCategoryName].push(d.disparities[i])
+				}
+			})
+		})
+	}
+	$scope.chooseMetric = function(metric){
+		$scope.currentMetric = metric;
+	}
+	function trunkData(){
+		$scope.data = {
+			"Age":[],
+			"Race/Ethnicity":[],
+			"Gender":[],
+			"Education":[],
+			"Income":[],
+			"Urbanicity":[]
+		}
+		// $scope.currentMetric = "Age";
+	}
+	trunkData();
+$scope.currentMetric = "Age";
+	$scope.Ks = function(num){
+		num = num / 1000;
+		num = String(num);
+		var spl = num.split(".");
+		if(spl.length>1){
+			if(spl[1].length>1){
+				num = spl[0]+"."+spl[1][0];
+			}
+		}
+		return num;
+	}
+	
 }

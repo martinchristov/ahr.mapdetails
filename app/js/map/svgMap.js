@@ -51,7 +51,19 @@ var svgMap = {
                 });
 
                 state.click(function () {
-                    animateBar(Math.random())
+                    // $("#chosen-state-input").val(mapData[i].shortname).trigger('keyup')
+                    angular.element($(".metric-type")).scope().changeState(mapData[i].shortname)
+                    
+
+                    // $.get(uri.api+"?compareName="+compareName+"&stateCode="+mapData[i].shortname,handleDisparities)
+                    animateBar(mapData[i].perc/100);
+                    stateTitle.animate({opacity:0},130,function(){
+                        stateTitle.html(mapData[i].name).animate({opacity:1},130)
+                    })
+                    if(!stateChosen){
+                        stateChosen=true;
+                        stateTitle.next().css({display:"block",opacity:0}).animate({opacity:1},300)
+                    }
                     // if (mapData[i].link != null && mapData[i].link != "") {
                     //     if (typeof mapData[i].link != "function") {
                     //         window.location.href = mapData[i].link;

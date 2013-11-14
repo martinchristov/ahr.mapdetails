@@ -54,7 +54,7 @@
 		.bar{
 			width: 646px;
 			height: 60px;
-
+			margin-left: -45px;
 		}
 
 		.subar{
@@ -69,22 +69,17 @@
 			color: #fff;
 			overflow: hidden;
 			position: relative;
-			.fill{
-				background: #3b85f5;
-				height: 100%;
-				border-right: 1px solid white;
-				-webkit-transform:skew(-24deg,0) translate(-5px);
-				.transition(all .75s);
-			}
+
 			.met{
 				position: absolute;
 				z-index: 4;
 				top: 4.5px;
 				text-align: right;
-				width: 150px;
+				width: 60px;
 				font-size: 24px;
 				font-style: italic;
 				font-weight: 300;
+				.transition(left .4s)
 			}
 		}
 	}
