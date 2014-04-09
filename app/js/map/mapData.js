@@ -5,7 +5,12 @@ var
         }, borderColor:"white", borderColorOver: "white", animSpeed: 350
     },
 
-	mapData = {
+	mapData2 = {
+		st0:{
+			id:0,
+			name:"United States",
+			shortname:"ALL"
+		},
     st1: {
    	 	id: 1,
 		name: "Alabama",

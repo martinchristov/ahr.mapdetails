@@ -28,6 +28,16 @@ module.exports = function(grunt) {
         ],
         dest:"app/js/app.cct.js"
       }
+      ,
+      compileshort:{
+        src:[
+          "app/bower_components/angularjs-bower/angular.min.js",
+          "app/js/map/mapData.js",
+          "app/js/map/svgMap.js",
+          "app/js/app.js"
+        ],
+        dest:"app/js/app.cc2.js"
+      }
     },
 
     watch:{

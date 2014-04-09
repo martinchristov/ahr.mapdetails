@@ -8,6 +8,8 @@
 	<body>
 		<script>
 		var compareName = "smoking";
+		var selectedState = "ALL";
+
 		</script>
 		<img src="img/header.jpg" alt="">
 		<div style="width:940px;margin:10px auto">
@@ -457,58 +459,34 @@
 					<div ng-app ng-controller="MainCtrl">
 
 					<ul class="metric-type">
-						<li ng-repeat="(metric, obj) in data">
+						<li ng-repeat="(metric, obj) in data" ng-hide="{{data[metric].length==0}}">
 							<a ng-class="{current: currentMetric==metric}" ng-click="chooseMetric(metric)">{{metric}}</a>
 						</li>
-						<!-- <li><a>Gender</a></li>
-						<li><a>Age</a></li>
-						<li><a class="current">Race / Ethnicity</a></li>
-						<li><a>Education</a></li>
-						<li><a>Income</a></li>
-						<li><a>Urbanicty</a></li> -->
+						
 					</ul>
+					<div class="clear"></div>
 					<div class="left col">
 						<h3>Percent of population</h3>
 						
-						<div ng-repeat="obj in data[currentMetric]">
+						<div ng-repeat="obj in data[currentMetric]" ng-hide="obj.Affected==0">
 							<div class="label">{{obj.MeasureName}}</div>
 							<div class="bar">
-								<div class="fill" style="width:{{obj.Value}}%"></div>
-								<div class="met" style="left:{{(obj.Value/100)*310-60}}px">{{obj.Value}}%</div>
+								<div class="fill" ng-style="setWidth(obj)"></div>
+								<div class="met" ng-style="setLeft(obj)">{{obj.Value}}%</div>
 							</div>
 						</div>
-						
-<!-- 
-						<div class="label">HISPANIC</div>
-						<div class="bar">
-							<div class="fill" style="width:55%"></div>
-							<div class="met" style="left:107px">55%</div>
-						</div> -->
 					</div>
 					<div class="right col">
-						<h3>Population number affected</h3>
+						<h3>Population number affected <small>(in 000)</small></h3>
 
-						<div ng-repeat="obj in data[currentMetric]">
+						<div ng-repeat="obj in data[currentMetric]" ng-hide="obj.Affected==0">
 							<div class="label">&nbsp;</div>
 							<div class="bar">
-								<div class="fill" style="width:{{(obj.Affected/obj.Population)*100}}%"></div>
-								<div class="met" style="left:{{(obj.Affected/obj.Population)*310-60}}px">{{Ks(obj.Affected)}}K</div>
-							<div class="met l" style="left:{{(obj.Affected/obj.Population)*310+5}}px">{{Ks(obj.Population)}}K</div>
+								<div class="fill" ng-style="setWidth2(obj)"></div>
+								<div class="met" ng-style="setLeft2(obj)">{{obj.Affected}}</div>
+							
 							</div>
 						</div>
-<!-- 
-						<div class="label">&nbsp;</div>
-						<div class="bar">
-							<div class="fill" style="width:55%"></div>
-							<div class="met" style="left:107px">125K</div>
-							<div class="met l" style="left:175px">120K</div>
-						</div>
-						<div class="label">&nbsp;</div>
-						<div class="bar">
-							<div class="fill" style="width:55%"></div>
-							<div class="met" style="left:107px">125K</div>
-							<div class="met l" style="left:175px">120K</div>
-						</div> -->
 					</div>
 					</div>
 				</div>
@@ -519,6 +497,11 @@
 			<img src="img/side.jpg" style="float:right" alt="">
 		</div>
 		<script src="js/app.cct.js"></script>
+		<script>
+
+			$(document).ready(initDisparityMap)
+
+		</script>
   		<script src="http://localhost:35729/livereload.js"></script>
 	</body>
 </html>
